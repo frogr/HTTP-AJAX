@@ -2,8 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import ReduxPromise from "ReduxPromise";
+import ReduxPromise from "redux-promise";
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
 import reducers from "./reducers";
+import FriendsList from "./components/FriendsList.js";
 
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 
@@ -15,7 +18,7 @@ ReactDOM.render(
         window.__REDUX_DEVTOOLS_EXTENSION__()
     )}
   >
-    <App />
+    <FriendsList />
   </Provider>,
   document.getElementById("root")
 );
