@@ -1,24 +1,32 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getFriends } from "../actions";
+import { getFriends, postFriend } from "../actions";
 import axios from "axios";
 
 class FriendsList extends Component {
-  componentDidMount() {
-    this.props.getFriends();
+  constructor() {
+    super();
+    this.state = {
+      friends: [],
+      friend: {
+        name: "",
+        age: "",
+        email: ""
+      }
+    };
+    this.addFriend = this.addFriend.bind(this);
+    this.updateNewFriend = this.updateNewFriend.bind(this);
   }
 
   render() {
     return (
       <div>
-        <form onSubmit={this.addFriend}>
-          <input
-            value={this.state.postFriend}
-            type="text"
-            onChange={this.updateNewFriend}
-          />
+        {/* <form onSubmit={this.state.addFriend}>
+          <input value={this.state.name} type="text" />
+          <input value={this.state.age} type="text" />
+          <input value={this.state.email} type="email" />
           <button type="submit"> Submit </button>
-        </form>
+        </form> */}
         <ul>
           {this.props.friends.map((friend, i) => {
             return (
@@ -29,7 +37,7 @@ class FriendsList extends Component {
                 <p> {`Email: ${friend.email}`}</p>
               </li>
             );
-          })};
+          })}
         </ul>
       </div>
     );
@@ -41,7 +49,9 @@ class FriendsList extends Component {
       friend: this.state.postFriend
     });
     this.setState({
-      postFriend: ""
+      name: "",
+      age: "",
+      email: ""
     });
   }
 
@@ -56,5 +66,11 @@ const mapStateToProps = state => {
     friends: state.friends
   };
 };
-
-export default connect(mapStateToProps, { getFriends })(FriendsList);
+const mapDispatchToProps = dispatch => {
+  return {
+    postFriend: friend => {
+      dispatch(postFriend(friend));
+    }
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsList);
